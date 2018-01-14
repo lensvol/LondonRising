@@ -23,9 +23,9 @@ def process_row(row, aes):
         if dict['json']['body']:
             to_encrypt = bytes(json.dumps(dict['json']['body']),'ascii')
             padlen = 16 - len(to_encrypt)%16
-            to_encrypt += bytes(chr(padlen)*padlen, 'ascii')
+            to_encrypt += bytes(chr(padlen)*padlen, 'utf-8')
             encrypted = aes.encrypt(to_encrypt)
-            dict['json']['body'] = json.dumps(base64.encodebytes(encrypted).strip())
+            dict['json']['body'] = json.dumps(base64.encodebytes(encrypted).strip().decode('utf-8'))
     except KeyError:
         pass
     return dict
