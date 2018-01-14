@@ -21,7 +21,7 @@ def process_row(row, aes):
             'doc_type':       row[8]}
     try:
         if dict['json']['body']:
-            to_encrypt = bytes(json.dumps(dict['json']['body']),'ascii')
+            to_encrypt = bytes(json.dumps(dict['json']['body']),'utf-8')
             padlen = 16 - len(to_encrypt)%16
             to_encrypt += bytes(chr(padlen)*padlen, 'utf-8')
             encrypted = aes.encrypt(to_encrypt)
