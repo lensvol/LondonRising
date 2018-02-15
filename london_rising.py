@@ -103,5 +103,5 @@ if __name__ == "__main__":
     infile = args.infile if args.infile else DECRYPTED_FILE if args.encrypt else ORIG_FILE
     outfile = args.outfile if args.outfile else ORIG_FILE if args.encrypt else DECRYPTED_FILE
     func = encrypt_row if args.encrypt else decrypt_row
-    graph = args.graphfile if args.graphfile else GRAPH_FILE if args.graph else None
+    graph = None if not args.graph else args.graphfile if args.graphfile else GRAPH_FILE
     main(infile, outfile, func, graph)
