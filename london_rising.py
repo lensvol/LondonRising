@@ -108,11 +108,21 @@ class FLGraph(object):
         #  TODO: actually constructing the graph
         if self._should_skip:
             return
+        row_dict = self._flatten_node(row_dict)
 
     def write_to_file(self):
         if self._should_skip:
             return
         self._write_func()
+
+    @staticmethod
+    def _flatten_node(node):
+        for key in node:
+            if key == 'body' or key == 'json':
+                for nested in node[key]:
+                    node[nested] = node[nested][key]
+                del node[key]
+        return node
 
 
 if __name__ == "__main__":
