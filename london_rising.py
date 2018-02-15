@@ -9,6 +9,7 @@ except ImportError:
     #  workaround for a bug in some Windows versions of Python
     import crypto
     sys.modules['Crypto'] = crypto
+    import Crypto.Cipher.AES
 
 
 def main():
