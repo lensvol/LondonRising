@@ -5,11 +5,13 @@ import base64
 import shutil
 import argparse
 import os
+
 try:
     import Crypto.Cipher.AES as AES
 except ImportError:
     #  workaround for a bug in some Windows versions of Python
     import crypto
+
     sys.modules['Crypto'] = crypto
     import Crypto.Cipher.AES as AES
 
@@ -88,11 +90,10 @@ def encode_to_bytes(x):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=
-                                     "Tools for reverse engineering databases from the Fallen London mobile app", )
+                                     "Tools for reverse engineering databases from the Fallen London mobile app")
     parser.add_argument("-e", "--encrypt", help="Encrypt instead of decrypting", action="store_true")
     parser.add_argument("-i", "--infile", help=
-    "File to read from (default:" + ORIG_FILE + "for decryption, " + DECRYPTED_FILE +
-    " for encryption")
+                        "File to read from (default:"+ORIG_FILE+"for decryption,"+ DECRYPTED_FILE+" for encryption")
     parser.add_argument("-o", "--outfile", help="File to write to (default: like with infile, but swap encryption and" +
                                                 " decryption)")
     args = parser.parse_args()
