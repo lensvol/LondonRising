@@ -20,8 +20,9 @@ GRAPH_FILE = "fallenlondon.gexf"
 KEY = b"eyJUaXRsZSI6Ildo"
 
 
-def main(input_file, output_file, xcrypt, graph):
-    #  TODO: graph generation
+def main(input_file, output_file, xcrypt, graphfile):
+    graphdata = FLGraph(graphfile)
+
     db = sqlite3.connect(input_file)
     c = db.cursor()
     c.execute('select * from revs')
@@ -35,7 +36,10 @@ def main(input_file, output_file, xcrypt, graph):
     for x in c.fetchall():
         x = xcrypt(x, AES.new(KEY, AES.MODE_CBC, b'\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0'))
         c2.execute('update revs set json=? where sequence=?', (json.dumps(x['json']), str(x['sequence'])))
+        graphdata.add_graph_node(x)
+
     db2.commit()
+    graphdata.write_to_file()
 
 
 def decrypt_row(row, aes):
@@ -86,6 +90,29 @@ def decode_from_bytes(x):
 
 def encode_to_bytes(x):
     return bytes(x, 'utf-8') if type(x) is str else x
+
+
+class FLGraph(object):
+    def __init__(self, graphfile):
+        if graphfile is None:
+            self._should_skip = True
+            return
+        import networkx
+        import functools
+        self._should_skip = False
+        self._G = networkx.MultiDiGraph()
+        self._write_func = functools.partial(networkx.write_gexf, self._G, graphfile,
+                                             encoding='utf-8', prettyprint=True)
+
+    def add_graph_node(self, row_dict):
+        #  TODO: actually constructing the graph
+        if self._should_skip:
+            return
+
+    def write_to_file(self):
+        if self._should_skip:
+            return
+        self._write_func()
 
 
 if __name__ == "__main__":
