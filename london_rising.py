@@ -14,13 +14,14 @@ except ImportError:
     sys.modules['Crypto'] = crypto
     import Crypto.Cipher.AES as AES
 
-DECRYPTED_FILE = "decrypted.cblite"
 ORIG_FILE = "fallenlondonproduction.cblite"
+DECRYPTED_FILE = "decrypted.cblite"
+GRAPH_FILE = "fallenlondon.gexf"
 KEY = b"eyJUaXRsZSI6Ildo"
 
 
-def main(input_file, output_file, xcrypt):
-    #  TODO: graph generation (targeting gephi?)
+def main(input_file, output_file, xcrypt, graph):
+    #  TODO: graph generation
     db = sqlite3.connect(input_file)
     c = db.cursor()
     c.execute('select * from revs')
@@ -90,13 +91,17 @@ def encode_to_bytes(x):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=
                                      "Tools for reverse engineering databases from the Fallen London mobile app")
-    parser.add_argument("-e", "--encrypt", help="Encrypt instead of decrypting", action="store_true")
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("-e", "--encrypt", help="Encrypt instead of decrypting", action="store_true")
+    group.add_argument("-g", "--graph", help="Create a graph of decrypted data")
     parser.add_argument("-i", "--infile", help=
-                        "File to read from (default:"+ORIG_FILE+"for decryption,"+ DECRYPTED_FILE+" for encryption")
+                        "File to read from (default:"+ORIG_FILE+"for decryption," + DECRYPTED_FILE + " for encryption")
     parser.add_argument("-o", "--outfile", help="File to write to (default: like with infile, but swap encryption and" +
                                                 " decryption)")
+    parser.add_argument("--graphfile", help="Filename for graph output (ignored if no -g; default:" + GRAPH_FILE + ")")
     args = parser.parse_args()
     infile = args.infile if args.infile else DECRYPTED_FILE if args.encrypt else ORIG_FILE
     outfile = args.outfile if args.outfile else ORIG_FILE if args.encrypt else DECRYPTED_FILE
     func = encrypt_row if args.encrypt else decrypt_row
-    main(infile, outfile, func)
+    graph = args.graphfile if args.graphfile else GRAPH_FILE if args.graph else None
+    main(infile, outfile, func, graph)
