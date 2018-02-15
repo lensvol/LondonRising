@@ -93,7 +93,7 @@ if __name__ == "__main__":
                                      "Tools for reverse engineering databases from the Fallen London mobile app")
     group = parser.add_mutually_exclusive_group()
     group.add_argument("-e", "--encrypt", help="Encrypt instead of decrypting", action="store_true")
-    group.add_argument("-g", "--graph", help="Create a graph of decrypted data")
+    group.add_argument("-g", "--graph", help="Create a graph of decrypted data", action="store_true")
     parser.add_argument("-i", "--infile", help=
                         "File to read from (default:"+ORIG_FILE+"for decryption," + DECRYPTED_FILE + " for encryption")
     parser.add_argument("-o", "--outfile", help="File to write to (default: like with infile, but swap encryption and" +
