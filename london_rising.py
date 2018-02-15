@@ -115,13 +115,21 @@ class FLGraph(object):
             return
         self._write_func()
 
-    @staticmethod
-    def _flatten_node(node):
-        for key in node:
-            if key == 'body' or key == 'json':
-                for nested in node[key]:
-                    node[nested] = node[nested][key]
-                del node[key]
+    @classmethod
+    def _flatten_node(cls, node):
+
+        cls._parametrized_flatten(node, 'json')
+        cls._parametrized_flatten(node, 'body')
+        return node
+
+    @classmethod
+    def _parametrized_flatten(cls, node, param):
+        try:
+            for key in node[param]:
+                node[key] = node[param][key]
+            del node[param]
+        except KeyError:
+            pass
         return node
 
 
