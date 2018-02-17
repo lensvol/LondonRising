@@ -5,6 +5,7 @@ import base64
 import shutil
 import argparse
 import os
+import fl_types
 
 try:
     import Crypto.Cipher.AES as AES
@@ -109,6 +110,11 @@ class FLGraph(object):
         if self._should_skip:
             return
         row_dict = self._flatten_node(row_dict)
+        node, edges = fl_types.parse_dict_to_game_object(row_dict, self.add_graph_node)
+        if node is not None:
+            self._G.add_node(node[0], **node[1])
+            return node[0]
+        return None
 
     def write_to_file(self):
         if self._should_skip:
