@@ -212,7 +212,6 @@ def parse_dict_to_game_object(row_dict, recurse):
     if 'type' not in row_dict:
         return None, None
     curr_type = row_dict['type']
-    del row_dict['type']
     try:
         return types[curr_type](row_dict, recurse).to_graph_node()
     except KeyError:
