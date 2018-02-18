@@ -106,7 +106,6 @@ class FLGraph(object):
                                              encoding='utf-8', prettyprint=True)
 
     def add_graph_node(self, row_dict):
-        #  TODO: actually constructing the graph
         if self._should_skip:
             return
         row_dict = self._flatten_node(row_dict)
