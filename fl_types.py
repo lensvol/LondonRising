@@ -70,9 +70,13 @@ TYPES = {typename: type(typename, (GameObject,), {}) for typename in ('sidebarco
                                                                       'domiciles', 'events', 'deck', 'storeitems',
                                                                       'exchanges', 'shops', 'availabilities',
                                                                       'acts', 'childbranches')}
+IGNORE_FIELDS = ['doc_type', 'Type', 'deleted', 'current']
+IGNORE_TYPES = []
 
 
 def parse_dict_to_game_object(row_dict, recurse):
-    if 'type' not in row_dict:
+    if 'type' not in row_dict or row_dict['type'] in IGNORE_TYPES:
         return None, None
+    for x in IGNORE_FIELDS:
+        del row_dict[x]
     return TYPES[row_dict['type']](row_dict, recurse).to_graph_node()
