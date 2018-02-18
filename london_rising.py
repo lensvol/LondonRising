@@ -112,6 +112,7 @@ class FLGraph(object):
         node, edges = fl_types.parse_dict_to_game_object(row_dict, self.add_graph_node)
         if node is not None:
             self._G.add_node(node[0], **node[1])
+            self._G.add_edges_from(edges)
             return node[0]
         return None
 
