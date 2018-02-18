@@ -3,3 +3,4 @@
 *.cblite-wal
 *.bak
 *.gexf
+.idea/*
