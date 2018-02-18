@@ -1,6 +1,3 @@
-#  TODO: cleanup, less copypasta
-
-
 class GameObject(object):
     def __init__(self, row_dict, recurse):
         try:
@@ -29,47 +26,34 @@ class GameObject(object):
         return ret
 
     def get_ref_names(self):
-        return []
+        return ['QualitiesAffected', 'QualitiesRequired', 'QualitiesPossessedList', 'Enhancements', 'Personae',
+                'StartingArea', 'LimitedToArea', 'Deck', 'Category', 'SettingIds', 'Shops', 'Availabilities',
+                'QualitiesAffectedOnTarget', 'QualitiesAffectedOnVictory', 'PurchaseQuality', 'Quality']
 
     def destructure_ref(self, name, ref):
-        if 'Qualities' or 'Quality' in name:
+        if 'Qualities' in name or 'Quality' in name:
             try:
-                return (Quality.__name__ + str(x['AssociatedQuality']['Id']) for x in ref)
+                return ('qualities' + str(x['AssociatedQuality']['Id']) for x in ref)
             except (TypeError, KeyError):
-                return Quality.__name__ + str(ref['Id'])
+                return 'qualities' + str(ref['Id'])
         if name == 'LimitedToArea':
-            return Area.__name__ + str(ref['Id']),
+            return 'areas' + str(ref['Id']),
+        if name == 'SettingIds':
+            return ('settings' + str(x) for x in ref)
         if name == 'StartingArea':
-            ref['type'] = name.lower()
+            ref['type'] = 'areas'
             return self.recursive_add(ref),
-        if name == 'Personae':
+        if name == 'Personae' or name == 'Shops' or name == 'Availabilities':
             ret = []
             for x in ref:
                 x['type'] = name.lower()
                 ret.append(self.recursive_add(x))
             return ret
-        if name == 'Enhancements':
+        if name == 'Enhancements' or name == 'Deck':
             ref['type'] = name.lower()
             return self.recursive_add(ref),
-        if name == 'Deck':
-            ref['type'] = name.lower()
-            return self.recursive_add(ref),
-        if name == 'Shops':
-            ret = []
-            for x in ref:
-                x['type'] = name.lower()
-                ret.append(self.recursive_add(x))
-            return ret
-        if name == 'Availabilities':
-            ret = []
-            for x in ref:
-                x['type'] = name.lower()
-                ret.append(self.recursive_add(x))
-            return ret
         if name == 'Category':
             return name.lower() + ref['Id'] + ref['Title']
-        if name == 'SettingIds':
-            return (Setting.__name__ + str(x) for x in ref)
         raise ValueError("Cannot destructure reference to " + name)
 
     def to_graph_node(self):
@@ -79,142 +63,15 @@ class GameObject(object):
                ((self.get_guid(), x) for x in self.refs)
 
 
-class SideBarContents(GameObject):
-    def __init__(self, row_dict, recurse):
-        super().__init__(row_dict, recurse)
-
-
-class LivingStory(GameObject):
-    def __init__(self, row_dict, recurse):
-        super().__init__(row_dict, recurse)
-
-    def get_ref_names(self):
-        return ['QualitiesAffected', 'QualitiesRequired']
-
-
-class Quality(GameObject):
-    def __init__(self, row_dict, recurse):
-        super().__init__(row_dict, recurse)
-
-    def get_ref_names(self):
-        return ['QualitiesPossessedList', 'Enhancements']
-
-
-class Setting(GameObject):
-    def __init__(self, row_dict, recurse):
-        super().__init__(row_dict, recurse)
-
-    def get_ref_names(self):
-        return ['Personae', 'StartingArea']
-
-
-class Area(GameObject):
-    def __init__(self, row_dict, recurse):
-        super().__init__(row_dict, recurse)
-
-
-class Persona(GameObject):
-    def __init__(self, row_dict, recurse):
-        super().__init__(row_dict, recurse)
-
-
-class AccessCode(GameObject):
-    def __init__(self, row_dict, recurse):
-        super().__init__(row_dict, recurse)
-
-    def get_ref_names(self):
-        return ['QualitiesAffected']
-
-
-class NewsItem(GameObject):
-    def __init__(self, row_dict, recurse):
-        super().__init__(row_dict, recurse)
-
-
-class Domicile(GameObject):
-    def __init__(self, row_dict, recurse):
-        super().__init__(row_dict, recurse)
-
-
-class Event(GameObject):
-    def __init__(self, row_dict, recurse):
-        super().__init__(row_dict, recurse)
-
-    def get_ref_names(self):
-        return ['LimitedToArea', 'QualitiesAffected', 'QualitiesRequired', 'Deck']
-
-
-class Deck(GameObject):
-    def __init__(self, row_dict, recurse):
-        super().__init__(row_dict, recurse)
-
-
-class StoreItem(GameObject):
-    def __init__(self, row_dict, recurse):
-        super().__init__(row_dict, recurse)
-
-    def get_ref_names(self):
-        return ['QualitiesAffected', 'QualitiesRequired', 'Category']
-
-
-class Exchange(GameObject):
-    def __init__(self, row_dict, recurse):
-        super().__init__(row_dict, recurse)
-
-    def get_ref_names(self):
-        return ['SettingIds', 'Shops']
-
-
-class Shop(GameObject):
-    def __init__(self, row_dict, recurse):
-        super().__init__(row_dict, recurse)
-
-    def get_ref_names(self):
-        return ['Availabilities']
-
-
-class Availability(GameObject):
-    def __init__(self, row_dict, recurse):
-        super().__init__(row_dict, recurse)
-
-    def get_ref_names(self):
-        return ['PurchaseQuality', 'Quality']
-
-
-class Act(GameObject):
-    def __init__(self, row_dict, recurse):
-        super().__init__(row_dict, recurse)
-
-    def get_ref_names(self):
-        return ['QualitiesAffectedOnTarget', 'QualitiesAffectedOnVictor']
+TYPES = {typename: type(typename, (GameObject,), {}) for typename in ('sidebarcontents', 'livingstories',
+                                                                      'qualities', 'settings', 'personae',
+                                                                      'accesscodes', 'newsitems', 'areas',
+                                                                      'domiciles', 'events', 'deck', 'storeitems',
+                                                                      'exchanges', 'shops', 'availabilities',
+                                                                      'acts')}
 
 
 def parse_dict_to_game_object(row_dict, recurse):
-    types = {
-        'sidebarcontents': SideBarContents,
-        'livingstories': LivingStory,
-        'qualities': Quality,
-        'settings': Setting,
-        'startingarea': Area,
-        'personae': Persona,
-        'accesscodes': AccessCode,
-        'newsitems': NewsItem,
-        'areas': Area,
-        'domiciles': Domicile,
-        'events': Event,
-        'deck': Deck,
-        'storeitems': StoreItem,
-        'exchanges': Exchange,
-        'shops': Shop,
-        'availabilities': Availability,
-        'acts': Act
-    }
     if 'type' not in row_dict:
         return None, None
-    curr_type = row_dict['type']
-    try:
-        return types[curr_type](row_dict, recurse).to_graph_node()
-    except KeyError:
-        import traceback
-        traceback.print_exc()
-        return GameObject(row_dict, recurse).to_graph_node()
+    return TYPES[row_dict['tye']](row_dict, recurse).to_graph_node()
