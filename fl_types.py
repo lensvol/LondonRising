@@ -4,6 +4,7 @@ class GameObject(object):
                 'StartingArea', 'LimitedToArea', 'Deck', 'Category', 'SettingIds', 'Shops', 'Availabilities',
                 'QualitiesAffectedOnTarget', 'QualitiesAffectedOnVictory', 'PurchaseQuality', 'Quality',
                 'ChildBranches', 'ParentEvent', 'areaid']
+    ignore_refs = ['Personae', 'ChildBranches', 'Shops', 'Category', 'SettingIds']
 
     def __init__(self, row_dict, recurse):
         self.id = row_dict['Id']
@@ -18,7 +19,7 @@ class GameObject(object):
 
     def init_attrs_and_refs(self, row_dict):
         for k in row_dict:
-            if k in self.refnames:
+            if k in self.refnames and k not in self.ignore_refs:
                 self.refs.extend(self.destructure_ref(k, row_dict[k]))
             else:
                 self.attrs[k] = row_dict[k]
@@ -71,11 +72,10 @@ TYPES = {typename: type(typename, (GameObject,), {}) for typename in ('sidebarco
                                                                       'exchanges', 'shops', 'availabilities',
                                                                       'acts', 'childbranches')}
 IGNORE_FIELDS = ['doc_type', 'Type', 'deleted', 'current']
-IGNORE_TYPES = []
 
 
 def parse_dict_to_game_object(row_dict, recurse):
-    if 'type' not in row_dict or row_dict['type'] in IGNORE_TYPES:
+    if 'type' not in row_dict:
         return None, None
     for x in IGNORE_FIELDS:
         if x in row_dict:

@@ -21,7 +21,11 @@ GRAPH_FILE = "fallenlondon.gexf"
 KEY = b"eyJUaXRsZSI6Ildo"
 
 
-def main(input_file, output_file, xcrypt, graphfile):
+def main(input_file, output_file, xcrypt, graphfile, big_graph):
+    if big_graph:
+        fl_types.IGNORE_FIELDS = []
+        fl_types.GameObject.ignore_refs = []
+
     graphdata = FLGraph(graphfile)
 
     db = sqlite3.connect(input_file)
@@ -150,9 +154,14 @@ if __name__ == "__main__":
     parser.add_argument("-o", "--outfile", help="File to write to (default: like with infile, but swap encryption and" +
                                                 " decryption)")
     parser.add_argument("--graphfile", help="Filename for graph output (ignored if no -g; default:" + GRAPH_FILE + ")")
+    parser.add_argument("--big-graph", help="If true, we don't try to limit the number of nodes/edges and generate" +
+                                            "a big graph. This makes Gephi mad so this isn't the default. This does" +
+                                            "nothing if no -g.",
+                        action='store_true')
     args = parser.parse_args()
     infile = args.infile if args.infile else DECRYPTED_FILE if args.encrypt else ORIG_FILE
     outfile = args.outfile if args.outfile else ORIG_FILE if args.encrypt else DECRYPTED_FILE
     func = encrypt_row if args.encrypt else decrypt_row
     graph = None if not args.graph else args.graphfile if args.graphfile else GRAPH_FILE
-    main(infile, outfile, func, graph)
+    big_graph_for_you = args.big_graph
+    main(infile, outfile, func, graph, big_graph_for_you)
