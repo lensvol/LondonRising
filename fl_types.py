@@ -4,7 +4,7 @@ class GameObject(object):
                 'StartingArea', 'LimitedToArea', 'Deck', 'Category', 'SettingIds', 'Shops', 'Availabilities',
                 'QualitiesAffectedOnTarget', 'QualitiesAffectedOnVictory', 'PurchaseQuality', 'Quality',
                 'ChildBranches', 'ParentEvent', 'areaid']
-    ignore_refs = ['Personae', 'ChildBranches', 'Shops', 'Category', 'SettingIds']
+    ignore_refs = ['Personae', 'ChildBranches', 'Shops', 'Category', 'SettingIds', 'Deck']
 
     def __init__(self, row_dict, recurse):
         self.id = row_dict['Id']
