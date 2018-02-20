@@ -144,6 +144,46 @@ class FLGraph(object):
 
 
 if __name__ == "__main__":
+    # text ASCII art generated with http://patorjk.com/software/taag (font: Georgia 11)
+    # ASCII Fanghat by me
+    # (but the output of https://manytools.org/hacker-tools/convert-images-to-ascii-art/ was used as reference)
+    print("""
+7MMF'                                 `7MM                        
+  MM                                     MM                        
+  MM         ,pW"Wq.  `7MMpMMMb.    ,M""bMM   ,pW"Wq.  `7MMpMMMb.  
+  MM        6W'   `Wb   MM    MM  ,AP    MM  6W'   `Wb   MM    MM  
+  MM      , 8M     M8   MM    MM  8MI    MM  8M     M8   MM    MM  
+  MM     ,M YA.   ,A9   MM    MM  `Mb    MM  YA.   ,A9   MM    MM  
+.JMMmmmmMMM  `Ybmd9'  .JMML  JMML. `Wbmd"MML. `Ybmd9'  .JMML  JMML.
+
+             ----------------------
+             |&&&&&&&&&&&&&&&&&&&&|
+             |&&&&&&&&&&&&/.     *|
+             |@@@&&&&&&&&&&@@@&*.%|
+             |@@@@@@@@@@@@@@@@@@#.|
+             |@@@@@@@@@@@@@@@@#.. |
+             |@@@@@@@@@@@@@@@@#.. |
+             |&@@@@@@@@@@@@@@@@@#.|
+       /----&(&@@@@@@@@@@@@@@@@@,@&----\  
+      @&&&&&&&&&&&& &&&&&&&& &&&&&&&&&&&@                         Fallen London
+     (%&&&&&&&&&&& ' &&&&&& ' &&&&&&&&&&&)          Reverse Engineering Project
+      @&&&&&&&&&&&   &&&&&&   &&&&&&&&&&@
+       \-------------------------------/  
+               \                */        
+                \  / v v v v.\  /
+                 \/           \/
+                 
+              ,,            ,,                  
+`7MM\"""Mq.    db            db                                     
+  MM   `MM.                                                        
+  MM   ,M9  `7MM  ,pP"Ybd `7MM  `7MMpMMMb.   .P"Ybmmm              
+  MMmmdM9     MM  8I   `"   MM    MM    MM  :MI  I8                
+  MM  YM.     MM  `YMMMa.   MM    MM    MM   WmmmP"                
+  MM   `Mb.   MM  L.   I8   MM    MM    MM  8M                     
+.JMML. .JMM..JMML.M9mmmP' .JMML..JMML  JMML. YMMMMMb               
+                                            6'     dP              
+                                            Ybmmmd'     
+    """)
     parser = argparse.ArgumentParser(description=
                                      "Tools for reverse engineering databases from the Fallen London mobile app")
     group = parser.add_mutually_exclusive_group()
@@ -165,3 +205,4 @@ if __name__ == "__main__":
     graph = None if not args.graph else args.graphfile if args.graphfile else GRAPH_FILE
     big_graph_for_you = args.big_graph
     main(infile, outfile, func, graph, big_graph_for_you)
+
