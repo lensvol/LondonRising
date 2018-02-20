@@ -4,7 +4,10 @@ class GameObject(object):
                 'StartingArea', 'LimitedToArea', 'Deck', 'Category', 'SettingIds', 'Shops', 'Availabilities',
                 'QualitiesAffectedOnTarget', 'QualitiesAffectedOnVictory', 'PurchaseQuality', 'Quality',
                 'ChildBranches', 'ParentEvent', 'areaid']
-    ignore_refs = ['Personae', 'ChildBranches', 'Shops', 'Category', 'SettingIds', 'Deck']
+    # we ignore areas and decks by default because almost everything is connected to them, which makes finding
+    # modularities difficult; we remove some other things as well because they make the graph too big and Gephi
+    # gets confused
+    ignore_refs = ['Deck', 'StartingArea', 'areaid', 'LimitedToArea', 'Personae', 'Category']
 
     def __init__(self, row_dict, recurse):
         self.id = row_dict['Id']
@@ -22,7 +25,8 @@ class GameObject(object):
             if k in self.refnames and k not in self.ignore_refs:
                 self.refs.extend(self.destructure_ref(k, row_dict[k]))
             else:
-                self.attrs[k] = row_dict[k]
+                self.attrs[k] = row_dict[k].replace('\x10', ''  # filtering out a bad char
+                                                    ) if type(row_dict[k]) is str else row_dict[k]
 
     def destructure_ref(self, name, ref):
         if 'Qualities' in name or name == 'Enhancements':
