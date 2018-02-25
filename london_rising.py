@@ -1,3 +1,16 @@
+#################################
+#                               #
+#         LONDON RISING         #
+#   The Fallen London Reverse   #
+#      Enginerring Project      #
+#                               #
+# This program is free and open #
+#    source software released   #
+#   GNU GPL 3 (see LICENCE for  #
+#       further details).       #
+#                               #
+#################################
+
 import sys
 import json
 import sqlite3
