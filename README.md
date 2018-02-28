@@ -55,3 +55,25 @@ most importantly: what is the real price of such power?
 + You've gained 1x **Reverse Engineer's Journal**
 + You've gained ∞ **Fate**!
 + A twist in your tale! You are now **A Scholar of Words-Behind-Worlds**
+
+# Actual Introduction
+
+Fallen London is a text-based browser MMO. It is set in a very
+interesting world and its writing might be among the best in gaming.
+Unfortunately, it is a browser MMO so all that good stuff is locked
+behind both microtransaction paywalls and endless hours of grinding.
+For a more detailed analysis of the game (and other titles set in
+the same world), feel free to read
+[an article](https://hg101.kontek.net/fallenlondon/fallenlondon.htm)
+that I've written for Hardcore Gaming 101 (#TODO: link to a new HG101
+site when they migrate that article).
+
+Fortunately for us, we don't have to play the boring game of Fallen
+London to learn the interesting story of Fallen London. Instead, we can
+play a much more interesting game of reverse engineering. You see, there
+was a time when in addition to being a browser-based game, Fallen London
+was also a mobile game - and that mobile version was not just a thin
+client. With a bit of reverse engineering knowledge (but not too much),
+a bit of programming (again, simple stuff), a few good (?) ideas and
+a very small dose of entry level graph theory/network analysis, we can
+make it reveal all its secrets.
