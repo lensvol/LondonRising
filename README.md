@@ -40,3 +40,18 @@ This README is a work in progress. It is also purposefully incomplete
 because using the provided tools allows for cheating in an online game.
 Full details will be published when the Fallen London mobile application
 is disconnected from the game servers.
+
+# Introduction
+
+Can it be true? All the world's knowledge, all the secrets - but no
+sacrifice required? Can everything about your existence and all your
+possible existences be deciphered from the inhuman languages and their
+Words-Behind-Worlds? Is that dusty old tome the real Reverse Engineer's
+Journal - and if it is, is it as powerful as they claimed? And perhaps
+most importantly: what is the real price of such power?
+
++ **Shadowy** is increasing...
++ **Watchful** is increasing...
++ You've gained 1x **Reverse Engineer's Journal**
++ You've gained ∞ **Fate**!
++ A twist in your tale! You are now **A Scholar of Words-Behind-Worlds**
