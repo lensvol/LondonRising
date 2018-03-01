@@ -77,3 +77,44 @@ client. With a bit of reverse engineering knowledge (but not too much),
 a bit of programming (again, simple stuff), a few good (?) ideas and
 a very small dose of entry level graph theory/network analysis, we can
 make it reveal all its secrets.
+
+# Something's rotten in London
+
+There are two things about the Fallen London mobile app that should
+sound very interesting to anyone with at least a bit of hacking/security
+knowledge. The first one is that, even though the game is an MMO, you
+can play it offline. The second one is that your energy regenerates
+faster in the mobile version than in the browser version, even though
+they use the same servers (you can make a character through a browser
+interface, play for a while, and then log in to the same character from
+mobile and play some more). This means that at least some parts of
+the game are implemented **client-side**, and the cool thing about
+things that happen on the client side is that you can actually control
+them.
+
+Here's how it works: when you start the app and log in, the app requests
+updates from the game servers. The server can send updates to images,
+database (more on that later: it's an important part) and player data
+(player data is represented as JSON). The app stores gameplay
+information as you're playing and when you quit it, it makes a JSON with
+all that data and sends it back to the servers. This is referred to as
+'syncing'. Everything between those syncs is client-side - and
+the players knew that for a long time, even though they might not have
+grasped the full implications of such design: players have been known to
+cheat in the game by force-stopping the app after a failed random check,
+and then repeatedly trying again until a desired outcome is reached.
+This has been an open secret for quite some time, and people have been
+banned for it:
+[here's](http://community.failbettergames.com/topic24836-possibly-the-first-paramount-presence.aspx)
+a thread about the first player to achieve the 'Paramount Presence'
+status (all main stats maxed out) being exposed as a cheater.
+
+The fact that this mobile app allows cheating is quite obvious, given
+its design. In fact, it is possible to develop more sophisticated cheats
+which don't require manual force-stopping, and here we'll briefly
+discuss one of them (although only after the app is disconnected from
+the servers). There is something far more interesting than those cheats
+though: if the game allows offline play, it needs to store at least some
+of its content on the client side (spoiler alert: it stores all of it).
+As reading Fallen London is superior to playing Fallen London, this
+content is what we're looking for.
