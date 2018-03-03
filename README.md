@@ -170,3 +170,64 @@ analysis software. I use the NetworkX library to represent game data as
 nodes and edges, write the fl_types module to tell it how to convert
 different types of game objects and then dump the output to GEXF format
 (it's based on XML because of course it is).
+
+## Working with Gephi: the big graphs
+
+I do a bit of research about open-source network analysis tools and go
+for Gephi. It has a Python scripting plugin, it's
+[aesthetic as hell](https://player.vimeo.com/video/9726202) and it has
+already been used in some interesting narrative network analysis
+projects - e.g. Andrew Beveridge's
+[Network of Thrones](https://www.macalester.edu/~abeverid/thrones.html)
+which used it to analyze the relations between the characters in A Song
+Of Ice and Fire novel series. What could possibly go wrong?
+
+Well, for the starters, Gephi just can't read my GEXF. It claims that
+some node or edge ID is null, even though it isn't. Googling reveals
+this to be
+[a known problem for large files](https://github.com/gephi/gephi/issues/1841).
+Because as of writing it haven't yet been fixed, I modify my scripts
+a bit to ignore some objects and to treat some references as if they
+were attributes, thus limiting the number of nodes and edges. This
+works, and we're given this beautiful representation of game data:
+
+![](images/graphs/unreadable-graph.png)
+
+I play around with colors a little bit (I color the nodes based on
+partition->type, with a custom palette generated from
+'Fancy (dark background)' preset), set the sizes of the nodes based on
+their indegree, make the background black and then try to find a decent
+layout. Unfortunately, most of the layouts either result in a huge mess
+or take forever to generate - both of those problems arising due to
+the size of my graph. Really, the only one that is even remotely useful
+here is 'Open Ord'.
+
+I also make labels for each node based on the 'Name'
+attribute and scale their size based on indegree. I display them in
+a nice Palatino font (I think Failbetter uses Adobe's Trajan Pro 3 but
+I don't have money for it). Unfortunately, you can't really see much of
+the text in this image - but if you look hard enough, you'll see
+the words 'Key of Dreams'. That's a quality which
+[only the developer accounts have](http://community.failbettergames.com/topic21866-what-is-the-key-of-dreams.aspx),
+and setting it as a required quality for something blocks it for normal
+users. This means that there's a lot of such locked content in the game
+(other quality used for locking is 'Impossible'; it's also required for
+a lot of things).
+
+![](images/graphs/big-graph.png)
+
+After trimming the graph a little bit (I removed things which don't have
+a 'type' attribute - as they're result of some kind of a bug - with
+Filters->Library->Attributes->Non-null->type (Attribute); I also removed
+things that are not connected to the main graph with
+Filters->Library->Topology->Giant Component). Then, I used the Dual
+Circle layout, made 8 upper order nodes based on the indegree and placed
+them outside of the main circle. This gave us this cool-looking star:
+
+![](images/graphs/8-point-star.png)
+
+As you see, the locations ('Somewhere else', 'Veilgarden',
+'your Lodgings', 'The University') are connected to many other things.
+In subsequent analysis, this made isolating graphs for specific
+questlines in an automated way difficult so I modified a script to
+ignore them so that most edges would connect events and qualities.
