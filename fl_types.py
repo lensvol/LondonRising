@@ -11,6 +11,7 @@
 #                               #
 #################################
 
+
 class GameObject(object):
 
     refnames = ['QualitiesAffected', 'QualitiesRequired', 'QualitiesPossessedList', 'Enhancements', 'Personae',
