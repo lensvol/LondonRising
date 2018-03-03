@@ -124,3 +124,49 @@ content is what we're looking for.
 [THIS PARAGRAPH IS INTENTIONALLY LEFT BLANK.]
 
 Check back after the mobile app closes.
+
+# Graphing the Neath
+
+## From JSON-in-SQLite to NetworkX to GEXF
+
+The decrypted database contains more or less the entire design of
+the game. There's just one problem with that: we have no convenient way
+of exploring it. Sure, we have a readable SQLite - but the game data
+isn't really described in a relational way so it's not very useful. You
+see, there are no foreign keys here. It's JSONs with ID fields that
+refer to ID fields of other JSONs when they want to make a reference.
+It's like a second database inside the first one.
+
+Speaking of references, there are a lot of those. Most of the in-game
+objects contain, are contained by or in other ways connect to other
+objects. One-to-one, one-to-many and many-to-one relations all exist in
+here - and to understand what's going on, we need a way to easily follow
+the links. Pulling the 'internal database', figuring out its structure
+and turning into actual, well-designed relational DB might be a good
+idea if we wanted to make our own version of the game and cared about
+performance but such a structure would be quite tedious to explore
+interactively as we attempt to untangle Fallen London's narrative.
+
+Given that Fallen London can be thought of as a hypertext game,
+a natural representation might be **H**ypertext **M**arkup **L**anguage.
+I of course reject this perfectly sane solution because I'd like
+something easier to manipulate in an automated fashion (the dataset is
+big so we want to reduce the tedium as much as possible).
+
+Because Fallen London can be though of as a hypertext, a hypertext can
+be thought of as a graph and JSONs in the database can be thought of as
+a second database, my first thought is to use a graph database like
+Neo4J. Unfortunately, there seems to be no Neo4J (or similar) equivalent
+to SQLite that can be stored in a single file. They all need to be set
+up as a server, which I feel is just not worth the trouble as it more or
+less guarantees that nobody reading this will want to waste time on
+that - and what good is a reversing writeup if the readers can't be
+bothered to follow it?
+
+In what in retrospect might not be such a good decision, I decide to
+drop the 'database' part of 'graph database' and just store everything
+as a graph that can be then accessed by graph exploration and network
+analysis software. I use the NetworkX library to represent game data as
+nodes and edges, write the fl_types module to tell it how to convert
+different types of game objects and then dump the output to GEXF format
+(it's based on XML because of course it is).
