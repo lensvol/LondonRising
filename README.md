@@ -118,3 +118,9 @@ though: if the game allows offline play, it needs to store at least some
 of its content on the client side (spoiler alert: it stores all of it).
 As reading Fallen London is superior to playing Fallen London, this
 content is what we're looking for.
+
+# Extracting game data
+
+[THIS PARAGRAPH IS INTENTIONALLY LEFT BLANK.]
+
+Check back after the mobile app closes.
