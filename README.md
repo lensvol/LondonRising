@@ -231,3 +231,50 @@ As you see, the locations ('Somewhere else', 'Veilgarden',
 In subsequent analysis, this made isolating graphs for specific
 questlines in an automated way difficult so I modified a script to
 ignore them so that most edges would connect events and qualities.
+
+## Using modularity to find related content
+
+Calculating modularity is one of the methods of (non-overlapping)
+community detection. Nodes within those communities will be densely
+connected with each other but sparsely connected to the rest of
+the graph. As a result, a graph will be effectively divided into
+subgraphs.
+
+Modularity is useful to us: a group of interconnected events, qualities,
+branches etc. is highly indicative of a discrete storyline.
+Unfortunately, this isn't so simple in practice: the algorithm tends to
+create both large communities that would be better off split up into
+smaller sections and micro-communities of 2 or 3 nodes that don't tell
+us much. Finding desired results will require a lot of manual tweaking.
+
+To run the algorithm, use Statistics->Network Overview->Modularity. You
+can then filter the graph by detected community with
+Filters->Library->Attributes->Partition->Modularity Class.
+
+With the modularity algorithm, we can find content related to our
+playable character's main stats. This is nice, but it also reveals how
+the presence of such 'popular' vertices distorts our results a bit:
+'those things are all related to your persuasion skill' is a very broad
+strokes connection when this skill is connected to (more or less) one
+fourth of the game's content.
+
+![](images/graphs/persuasive.png)
+
+![](images/graphs/shadowy.png)
+
+![](images/graphs/dangerous.png)
+
+![](images/graphs/watchful.png)
+
+But, as I said, with a bit of tweaking, you can find what you're looking
+for. Here's a graph representing the game's infamously difficult quest
+called 'Seeking Mr Eaten's Name'. We're digging into the game's secrets
+here: this is basically Fallen London's endgame, and very few players
+have finished it.
+
+![](images/graphs/smen.png)
+
+Keep in mind that the modularity algorithm is just a heuristic: while
+most of the things you see here are related to SMEN, I don't think that,
+for example, 'A Game of Chess' (one of the game's sort-of-PVP
+components) has anything to do with it.
