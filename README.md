@@ -295,3 +295,62 @@ to the players by making ego networks for 'Impossible!' and 'Key
 of Dreams' qualities.
 
 ![](images/graphs/inaccessible.png)
+
+## Ambitions: the final boss of Fallen London RE graphs
+
+It is said that a well designed final boss fight is like a final exam,
+testing everything you've learned while playing the game. In the game of
+reverse engineering Fallen London into cool-looking graphs, we're going
+to make the ultimate cool-looking graph with our knowledge of Gephi
+layouts, filters, modularity and ego networks. Ladies and gentlemen,
+it's time for Ambitions!
+
+In Fallen London, Ambitions can be though of as 'main quests'. They last
+a really long time, finishing them requires grinding related stats to
+quite a high level, they can have discrete subquests and you can only
+have one active at the same time.
+
+There are four ambitions in the game: Nemesis, Heart's Desire, Light
+Fingers and Bag a Legend. Due to their size, they connect to a lot of
+things, but there's one thing that makes working with them easier:
+qualities related to your main quest progress have titles like
+'Ambition: [ambition name]', or
+'Ambition: [ambition name] - [subtitle]'. This means that we can match
+them with simple filters: Filters->Library->Attributes->Equals->Name
+with values defined as 'Ambition: Nemesis.\*', 'Ambition: Heart.\*',
+'Ambition: Light.\*' and 'Ambition: Bag.\*' and the box that turns
+value to regex ticked. Now we can drop the Neighborhood Network into our
+subfilter and we're good to go.
+
+Well, we would be, if I didn't lie about one thing. You know, there's
+actually five ambitions. The last one is another one of the game's
+secrets. It's called 'Ambition: Enigma' and it works in a completely
+different way from other ambitions. It's very short, it's hidden behind
+some Invisible Cities references (or rather 'Invisible Cities references
+that are more explicit than the usual Invisible Cities references in
+Fallen London') and it's less about the world of the game and more about
+the game itself. So we need just one more ego network, but this is
+trivial to create.
+
+Now that we have a subgraph of all the ambition-related content, it's
+time to make it look cool. First of all, we create filters for
+qualities that track the progress of main quests. This works just like
+the filters in the above paragraph, but without Neighborhood Networks
+around them. We also make a filter for things that are not qualities
+that track progress directly: we need Filters->Library->Operator->NOT,
+with Filters->Library->Operator->UNION as its subfilter, and then we
+duplicate all the other filters and drop them as subfilters to that one.
+
+Unfortunately, this doesn't work too well for Enigma, as it's just two
+nodes called 'Ambition: Enigma' now. Fortunately, we can approach it
+differently. Because of its small size and the fact that it's not
+connected to anything else, we can easily find a modularity which
+includes the whole thing. We do it, and update the NOT filter
+accordingly.
+
+What follows is more art than science as I try to make the best-looking
+graph I can. The four inner circles are four ambitions, the outer circle
+is parts of their ego networks that don't track the quest progress
+directly, and that spiral outside of the main graph is Enigma.
+
+![](images/graphs/ambitions.png)
