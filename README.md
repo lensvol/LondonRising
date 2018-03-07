@@ -308,8 +308,9 @@ it's time for Ambitions!
 
 In Fallen London, Ambitions can be though of as 'main quests'. They last
 a really long time, finishing them requires grinding related stats to
-quite a high level, they can have discrete subquests and you can only
-have one active at the same time.
+quite a high level (or it would if they were actually possible to
+complete; as of writing, they're still unfinished), they can have
+discrete subquests and you can only have one active at the same time.
 
 There are four ambitions in the game: Nemesis, Heart's Desire, Light
 Fingers and Bag a Legend. Due to their size, they connect to a lot of
