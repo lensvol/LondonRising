@@ -278,3 +278,20 @@ Keep in mind that the modularity algorithm is just a heuristic: while
 most of the things you see here are related to SMEN, I don't think that,
 for example, 'A Game of Chess' (one of the game's sort-of-PVP
 components) has anything to do with it.
+
+## Ego networks
+
+Ego network consist of a vertice, all the vertices connected directly
+to it and all the edges between them. This is obviously a good way to
+show things around a central node. You can find the node's ego network
+in Gephi with Filters->Library->Topology->Ego Network and inputting its
+ID, and if you want to make an ego network for a group of nodes that
+you've filtered then drag Filters->Library->Topology->Neighborhood
+Network into its subfilters.
+
+In game terms, this is useful for finding stuff related to a specific
+quality. For example, we can get all the choices that aren't accessible
+to the players by making ego networks for 'Impossible!' and 'Key
+of Dreams' qualities.
+
+![](images/graphs/inaccessible.png)
