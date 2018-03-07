@@ -148,10 +148,11 @@ performance but such a structure would be quite tedious to explore
 interactively as we attempt to untangle Fallen London's narrative.
 
 Given that Fallen London can be thought of as a hypertext game,
-a natural representation might be **H**ypertext **M**arkup **L**anguage.
-I of course reject this perfectly sane solution because I'd like
-something easier to manipulate in an automated fashion (the dataset is
-big so we want to reduce the tedium as much as possible).
+a natural representation might be **H**yper**t**ext **M**arkup
+**L**anguage. I of course reject this perfectly sane solution because
+I'd like something easier to manipulate in an automated fashion
+(the dataset is big so we want to reduce the tedium as much as
+possible).
 
 Because Fallen London can be though of as a hypertext, a hypertext can
 be thought of as a graph and JSONs in the database can be thought of as
@@ -279,7 +280,7 @@ most of the things you see here are related to SMEN, I don't think that,
 for example, 'A Game of Chess' (one of the game's sort-of-PVP
 components) has anything to do with it.
 
-## Ego networks
+## Ego networks/Neighborhood networks
 
 Ego network consist of a vertice, all the vertices connected directly
 to it and all the edges between them. This is obviously a good way to
