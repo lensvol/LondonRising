@@ -203,8 +203,10 @@ or take forever to generate - both of those problems arising due to
 the size of my graph. Really, the only one that is even remotely useful
 here is 'Open Ord'.
 
-I also make labels for each node based on the 'Name'
-attribute and scale their size based on indegree. I display them in
+I also make labels for each node based on the 'Name' attribute (if you
+have Gephi scripting plugin installed,
+[there's a script for that](gephi_scripts/generate_labels.py))
+and scale their size based on indegree. I display them in
 a nice Palatino font (I think Failbetter uses Adobe's Trajan Pro 3 but
 I don't have money for it). Unfortunately, you can't really see much of
 the text in this image - but if you look hard enough, you'll see
