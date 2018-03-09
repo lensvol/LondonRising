@@ -358,3 +358,49 @@ is parts of their ego networks that don't track the quest progress
 directly, and that spiral outside of the main graph is Enigma.
 
 ![](images/graphs/ambitions.png)
+
+# Additional thoughts
+
++ I found some things about Gephi really annoying: it couldn't read
+large files, it sometimes corrupted its workspace (which meant that I
+had to start over because I couldn't open it); I don't want to be too
+critical about it because I don't think that the output of my scripts
+is anything like the data that is usually fed to Gephi, but I want to
+warn you: following my path will lead to a lot of annoyance
++ While I don't want to be too critical about Gephi itself, I am going
+to be extremely critical about its scripting console plugin; a lot
+of the features described in
+the [tutorial](https://github.com/gephi/gephi/wiki/Scripting-Plugin)
+(filter syntax, accessing graph node attributes like Python object
+attributes etc.) just don't seem to work
++ When I found an interesting subgraph, I went into Data Explorer
+to read the descriptions - this worked but it wasn't very convenient;
+if I went the HTML generation route, reading would be convenient because
+I'd just use browser for it, but finding interesting content would be
+a pain in the ass; a decent compromise would be using the scripting
+console to generate HTMLs from filtered subgraphs, but the problem is
+that the scripting console sucks; I might do it if I'm bored though
++ Maybe using a graph database would allow me to avoid some of
+the annoyances I'm describing right now - I need to experiment with
+Neo4J
++ I don't think anyone did something like that before - using graphs to
+reverse engineer a hypertext game (I might be wrong; feel free to send
+me examples of people doing that); despite the annoyances, I think it's
+really interesting and I'm planning to do something like that in
+the future; I'll probably try reversing *80 Days*, another British
+hypertext game with an alternate history Victorian setting
++ one thing that was always on the back of my head when doing this:
+Prolog; while I think that the exact things I was doing in this project
+(communities, ego networks, visualizations, interactive exploration) are
+better served by graph-specific tools, I do think that logic programming
+might also be useful in reversing hypertext games - maybe for generating
+'walkthroughs' from game data (especially if desired outcome depends not
+just on going from one vertice to another but also on some conditions
+held in variables); maybe I'll do something about logic programming
+for hypertext RE
++ because more or less the entire design of the game (well, aside from
+the things that haven't been written yet - the game is constantly
+evolving), it is probably possible to modify my scripts to output
+a format used by some CYOA/VN engine (e.g. Twine or Ren'Py) and generate
+an offline version of Fallen London; I don't think I have patience for
+that right now but don't let that discourage you!
