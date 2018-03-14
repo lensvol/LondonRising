@@ -404,3 +404,28 @@ evolving), it is probably possible to modify my scripts to output
 a format used by some CYOA/VN engine (e.g. Twine or Ren'Py) and generate
 an offline version of Fallen London; I don't think I have patience for
 that right now but don't let that discourage you!
+
+# Authors
+
+London Rising was brought to you by
+[Maciej Miszczyk](https://github.com/mmiszczyk) and
+[Mateusz Lindenberg](https://github.com/Lindeed). Of course, it wouldn't
+be possible without Alexis Kennedy and Failbetter Games.
+
+# License
+
+```
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+```
