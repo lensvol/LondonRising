@@ -389,7 +389,7 @@ me examples of people doing that); despite the annoyances, I think it's
 really interesting and I'm planning to do something like that in
 the future; I'll probably try reversing *80 Days*, another British
 hypertext game with an alternate history Victorian setting
-+ one thing that was always on the back of my head when doing this:
++ One thing that was always on the back of my head when doing this:
 Prolog; while I think that the exact things I was doing in this project
 (communities, ego networks, visualizations, interactive exploration) are
 better served by graph-specific tools, I do think that logic programming
