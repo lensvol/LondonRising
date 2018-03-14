@@ -139,7 +139,7 @@ It's like a second database inside the first one.
 
 Speaking of references, there are a lot of those. Most of the in-game
 objects contain, are contained by or in other ways connect to other
-objects. One-to-one, one-to-many and many-to-one relations all exist in
+objects. One-to-one, one-to-many and many-to-many relations all exist in
 here - and to understand what's going on, we need a way to easily follow
 the links. Pulling the 'internal database', figuring out its structure
 and turning into actual, well-designed relational DB might be a good
