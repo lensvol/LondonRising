@@ -398,7 +398,7 @@ might also be useful in reversing hypertext games - maybe for generating
 just on going from one vertice to another but also on some conditions
 held in variables); maybe I'll do something about logic programming
 for hypertext RE
-+ because more or less the entire design of the game (well, aside from
++ Because more or less the entire design of the game (well, aside from
 the things that haven't been written yet - the game is constantly
 evolving), it is probably possible to modify my scripts to output
 a format used by some CYOA/VN engine (e.g. Twine or Ren'Py) and generate
