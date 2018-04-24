@@ -273,6 +273,11 @@ side.
 
 # Graphing the Neath
 
+NOTE: The whole thing was written with me not realizing that the game
+uses Couchbase. Maybe everything would be easier if I researched
+Couchbase tooling. Maybe I'm an idiot. At least I got some nice graphs
+out of this.
+
 ## From JSON-in-SQLite to NetworkX to GEXF
 
 The decrypted database contains more or less the entire design of
