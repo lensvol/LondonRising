@@ -121,9 +121,155 @@ content is what we're looking for.
 
 # Extracting game data
 
-[THIS PARAGRAPH IS INTENTIONALLY LEFT BLANK.]
+There are two places worth looking at when starting an Android app reversing
+project. Well, okay, there may be more, but when I do that I tend to
+first look at internal storage and code. Usually, the latter is far more
+interesting - but this isn't the case in Fallen London, as we are going to
+see later in this project.
 
-Check back after the mobile app closes.
+## Internal storage
+
+Android's internal storage more or less guarantees that the files will
+only be accessible to the application that created it - that's why they keep
+things like config XMLs ('shared prefs'), images and SQLite databases in
+there. What internal storage does **not** guarantee is that the data won't
+be accessible to a sufficiently dedicated user. Rooted devices and emulators
+make extracting things from internal storage easy: just grab everything
+from
+
+```/data/data/[JAVA_PACKAGE_NAME]/```
+
+In this case, that will be
+
+```/data/data/com.failbettergames.fallenlondon/```
+
+When this is done, we have some images from the game, some javascript which
+is responsible for the UI and some other relatively uninteresting things.
+And then we have a file called fallenlondonproduction.cblite. From experience
+with Android I assumed it's an SQLite database and I only recently discovered
+that it's a file used by a """No"""SQL thingy called Couchbase. This didn't
+really matter because the file is actually a valid SQLite database. The thing
+about not using SQL is that you use SQL anyway.
+
+SQL or NoSQL aside, let's check out the contents of our database.
+
+![](images/screenshots/db.png)
+
+![](images/screenshots/encrypted_db.png)
+
+Looks like it's encrypted. Fortunately for us, we might have a key.
+
+## The code
+
+Theoretically, Fallen London could not store the key and just fetch it from
+the servers, but this wouldn't allow offline play. It could also have
+different keys for different parts of the game, with only the ones related
+to your current quests kept on your phone so that you only sometimes need
+to connect to the internet. I don't recall being forced to connect at any
+time though, so there's a possibility that we have just one key. Because
+neither internal storage nor the databse seemed to contain anything that
+looks like a key, let's check out the code.
+
+As everyone knows, Android apps are made with Java and compiled to DEX
+(Dalvik Executable) bytecode. The bytecode can be found inside the .apk file
+we use to install the app, and because .apk is just .zip, we can extract it,
+find all the files matching classes*.dex and either baksmali them to obtain
+Smali code (Dalvik assembly as similar to Jasmin for JVM as register machine
+assembly can be to a stack machine assembly) or dex2jar them and then
+drop them into any Java decompiler.
+
+Unfortunately, this doesn't help us much: you see, Fallen London is not your
+typical Java-based Android app. It's a multiplatform mobile application
+for Android and iOS. All the Java code does here is set up something called
+TypeManager and give it the control over the application. Googling
+'TypeManager' gives us a lot of links to [Adobe's software for managing
+fonts](https://en.wikipedia.org/wiki/Adobe_Type_Manager), which isn't we
+want - but 'TypeManager Android' gives us
+[this](https://developer.xamarin.com/api/type/Android.Runtime.TypeManager/).
+
+Now we know that Fallen London is a Xamarin app, probably written in C# and
+definitely compiled to CLR assemblies. CLR assemblies use the .dll extension,
+and we can see that there's a plenty of DLLs in Fallen London.
+
+![](images/screenshots/dotnet.png)
+
+Don't be fooled by the extension, there's no machine code in those DLLs.
+They're .NET/CLR/Mono stuff, and that decompiles really nicely, even better
+than Java (as all the Java decompilers seem to have a problem with try/catch
+block). Just drop them into a dotPeek or dnSpy and you get some readable
+C# code.
+
+One of the libraries is called 'PCLCrypto', and that's interesting because
+we want to decrypt something. It's just a library with cryptographic
+primitives, but we can search for references to it to find where the game
+calls it to decrypt the database. This leads us to a hardcoded key, as well
+as information about the algorithm and padding used.
+
+
+![](images/screenshots/crypto.png)
+
+## REVERSER RETURNING!
+
+Let's go back to the database. I write a simple Python script that creates
+a decrypted copy. We have a cipher, a mode, a padding and a key, but we're
+missing the initialization vector. Fortunately, it's not that the game hid
+it in some clever place, it just didn't use one. The crypto libs we use
+in Python require one, but we can go around it: an IV which consists of just
+null bytes is equivalent to no IV, because x xor 0 <=> x.
+
+Because this works, I add the encryption functionality that will make it
+possible to modify the database. Because this also works, we have some fun
+with editing the database. We don't have a sensible way of navigating it
+(more on that later), but we manage to find shops data by experimenting
+with simple SELECT statements. Decrypting the db, modifying shop data and
+encrypting the db allows us to buy expensive items (including Fate-locked
+ones, but not the 'Exceptional Friend' status which is a premium account
+that needs to be bought from Google Play Store, not in-game shops)
+for literally nothing. That's an extremely useful cheat which saves us
+a lot of grinding, but we're not going to focus on it too much because
+cheating isn't our main goal here. If you're going to be angry about that,
+keep in mind that we didn't release that info before the app went offline.
+
+## Once again, the code below
+
+Of course the real vulnerability behind our cheats is not the fact that
+we can edit the database, it is the fact that the server accepts sync
+with modified data. If we could reverse the syncing protocol, our control
+over our characters would probably be arbitrary. In the end, we didn't
+do that because we were more interested in data mining than cheating,
+but there is a possibility.
+
+An interesting thing about the code was that it kept information about
+the player's privilege level when it comes to editing game data, with
+multiple objects having a CanEdit() method. This may or may not indicate
+a more serious vulnerability if that privilege level is checked only
+on the client side, as that would imply that anyone could edit things
+like event descriptions or bios of other characters. I wanted to test
+it by hardcoding all the CanEdit() methods to return true but my
+inexperience with Xamarin made me stumble around, failing to compile
+and failing to run when compilation succeeded. Then Failbetter announced
+that the app will be going offline so I decided against going further
+with that plan, focusing completely on data mining instead. Of course
+the vulnerability might not have been there - I haven't checked. It
+doesn't matter now as the app is offline.
+
+The first vuln is hard to fix. A mitigation would be a complete
+redesign of the syncing protocol to be based around the idea of log
+replay: the sync message would contain information about what actions
+the player took and the server would simulate the player performing
+those actions through the browser, rejecting the actions that would be
+impossible due to the player not having enough money, Fate etc.
+This wouldn't be a complete fix though: a lot of the actions have
+randomized consequences, and the random seed would need to be shared
+between the server and the client to make sure that what the player
+sees in the app is the same thing that happens on the server.
+A cheating player would be able to modify this seed so that
+the outcomes would always be favorable. While this isn't as bad as
+getting Fate-locked stuff for free, it's still cheating.
+
+The second vuln, if it existed, would be easy to fix. The only thing
+required is performing the same checks that the app does on the server
+side.
 
 # Graphing the Neath
 
