@@ -217,9 +217,10 @@ possible to modify the database. Because this also works, we have some fun
 with editing the database. We don't have a sensible way of navigating it
 (more on that later), but we manage to find shops data by experimenting
 with simple SELECT statements. Decrypting the db, modifying shop data and
-encrypting the db allows us to buy expensive items (including Fate-locked
-ones, but not the 'Exceptional Friend' status which is a premium account
-that needs to be bought from Google Play Store, not in-game shops)
+encrypting the db allows us to buy expensive items (but it doesn't allow
+us to buy things that you pay for directly with money - those things are
+Fate itself and the 'Exceptional Friend' status, which is basically
+a premium account - as that is handled by Google Play Store, not app itself)
 for literally nothing. That's an extremely useful cheat which saves us
 a lot of grinding, but we're not going to focus on it too much because
 cheating isn't our main goal here. If you're going to be angry about that,
