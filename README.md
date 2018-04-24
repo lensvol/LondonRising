@@ -36,11 +36,6 @@
                                             Ybmmmd'     
 ```
 
-This README is a work in progress. It is also purposefully incomplete
-because using the provided tools allows for cheating in an online game.
-Full details will be published when the Fallen London mobile application
-is disconnected from the game servers.
-
 # Introduction
 
 Can it be true? All the world's knowledge, all the secrets - but no
@@ -305,7 +300,7 @@ I'd like something easier to manipulate in an automated fashion
 (the dataset is big so we want to reduce the tedium as much as
 possible).
 
-Because Fallen London can be though of as a hypertext, a hypertext can
+Because Fallen London can be thought of as a hypertext, a hypertext can
 be thought of as a graph and JSONs in the database can be thought of as
 a second database, my first thought is to use a graph database like
 Neo4J. Unfortunately, there seems to be no Neo4J (or similar) equivalent
